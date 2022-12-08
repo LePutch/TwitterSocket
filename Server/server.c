@@ -30,7 +30,7 @@ void start_server(int port)
             FD_SET(csock, &readfds);
         }
         else{
-            handle_client(readfds, maxFD);
+            handle_request(readfds, server_socket);
         }
     }
     end_server(server_socket);
@@ -60,7 +60,65 @@ int init_server(int port)
 }
 
 void handle_request(fd_set readfds, int server_socket){
+    char buffer[MAX_BUFFER_SIZE];
+    int resultRecv = recv(server_socket, buffer, MAX_BUFFER_SIZE, 0);
+    check_error(resultRecv, "error in recv()\n")
 
+    //on lit le premier octet du buffer pour savoir quel type de requête on a
+    switch(buffer[0]){
+        case 0:
+            printf("Subscribe request\n");
+            handle_subscribe(buffer, server_socket);
+            break;
+        case 1:
+            printf("Unsubscribe request\n");
+            handle_unsubscribe(buffer, server_socket);
+            break;
+        case 2:
+            printf("Publish request\n");
+            handle_publish(buffer, server_socket);
+            break;
+        case 3:
+            printf("List request\n");
+            handle_list(buffer, server_socket);
+            break;
+        case 4:
+            printf("Quit request\n");
+            handle_quit(buffer, server_socket);
+            break;
+        case 5:
+            printf("New client request\n");
+            handle_new_client(buffer, server_socket);
+            break;
+        case 6:
+            printf("Login request\n");
+            handle_login(buffer, server_socket);
+            break;
+        default:
+            printf("Unknown request\n");
+            break;
+    }
+}
+
+void handle_subscribe(char *buffer, int server_socket){  
+}
+
+void handle_unsubscribe(char *buffer, int server_socket){  
+}
+
+void handle_publish(char *buffer, int server_socket){  
+}
+
+void handle_list(char *buffer, int server_socket){  
+}
+
+void handle_quit(char *buffer, int server_socket){  
+}
+
+void handle_new_client(char *buffer, int server_socket){  
+}
+
+void handle_login(char *buffer, int server_socket){  
 }
 
 int  main (int argc, char *argv[])
