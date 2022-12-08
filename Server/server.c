@@ -121,6 +121,12 @@ void handle_new_client(char *buffer, int server_socket){
 void handle_login(char *buffer, int server_socket){  
 }
 
+void end_server(int server_socket)
+{
+    printf("Ending server\n");
+    close(server_socket);
+}
+
 int  main (int argc, char *argv[])
 {
     if(argc != 2){
