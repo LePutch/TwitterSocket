@@ -39,6 +39,10 @@ MessageList *createMessageList(char *message, clientList *destinataires){
 
 void addMessage(MessageList *messageList, char *message, clientList *destinataires){
     MessageList *temp = messageList;
+    if (temp == NULL){
+        messageList = createMessageList(message, destinataires);
+        return;
+    }
     while(temp->next != NULL){
         temp = temp->next;
     }
@@ -76,15 +80,19 @@ void deleteMessageList(MessageList *messages){
 
 
 //Création d'une liste de clients (les abonnements de chaque serverClient)
-clientList *createClientList(ClientServer *client){
+clientList *createClientList(ClientServer *cl){
     clientList *list = malloc(sizeof(clientList));
-    list->client = client;
+    list->client = cl;
     list->next = NULL;
     return list;
 }
 
 void addClientList(clientList *list, ClientServer *client){
     clientList *temp = list;
+    if (temp == NULL){
+        list = createClientList(client);
+        return;
+    }
     while(temp->next != NULL){
         temp = temp->next;
     }
@@ -120,3 +128,68 @@ void deleteClientList(clientList *list){
     }
 }
 
+int messageList_lenght(MessageList *messList){
+    int i = 0;
+    MessageList *temp = messList;
+    while(temp != NULL){
+        i++;
+        temp = temp->next;
+    }
+    return i;
+}
+
+char* convertIntToString(int i){
+    char *str = malloc(sizeof(char)*10);
+    sprintf(str,"%d",i);
+    return str;
+}
+
+char* messageList_to_string(MessageList *messList){
+    char *mess = malloc(sizeof(char)*1000);
+    MessageList *temp = messList;
+    strcat(mess,strcat(convertIntToString(messageList_lenght(temp)),"\n"));
+    while(temp != NULL){
+        mess = strcat(strcat(mess,temp->message),"\n");
+        mess = strcat(mess,clientList_to_string(temp->destinataires));
+        mess = strcat(mess,"\n");
+        temp = temp->next;
+    }
+    return mess;
+}
+
+char* clientList_to_string(clientList *cList){
+    char *mess = malloc(sizeof(char)*1000);
+    clientList *temp = cList;
+    while(temp != NULL){
+        ClientServer* current = temp->client;
+        if (current ==NULL){
+            temp = temp->next;
+            continue;
+        }
+        mess = strcat(mess,current->pseudo);
+        mess = strcat(mess," ");
+        temp = temp->next;
+    }
+    
+    return mess;
+}
+
+char* client_to_string(ClientServer *client){
+    char *mess = malloc(sizeof(char)*1000);
+    mess = strcat(client->pseudo,"\n");
+    mess = strcat(mess,clientList_to_string(client->abonnements));
+    mess = strcat(mess,"\n");
+    mess = strcat(mess,messageList_to_string(client->messages));
+    mess = strcat(mess,"\n");
+    return mess;
+}
+
+char* clients_to_string(clientList *cList){
+    char *mess = malloc(sizeof(char)*10000);
+    clientList *temp = cList;
+    while(temp != NULL){
+        mess = strcat(mess,client_to_string(temp->client));
+        temp = temp->next;
+    }
+    return mess;
+}

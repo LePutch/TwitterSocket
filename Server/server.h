@@ -37,8 +37,8 @@ enum requestType {
 
 static clientList *clients;
 
-void save_as_dat(char* file_path);
-void load_from_dat(char* file_path);
+void save_as_txt(char* file_path,char* data);
+void load_from_txt(char* file_path);
 
 void start_server(int port);
 int init_server(int port);
@@ -56,3 +56,23 @@ void handle_login(char *buffer, int client_socket);
 
 void send_message(int client_socket, char* message);
 void send_message_to_clientList(int client_socket, char* message, clientList *list);
+
+void test_dataBase();
+
+
+/*
+
+DATA FORMAT:
+
+pseudo1
+subbedto pseudo list
+n-messages
+message1
+receiver1 receiver2 receiver3...
+message2
+receiver1 receiver2 receiver3...
+...
+pseudo2
+...
+
+*/

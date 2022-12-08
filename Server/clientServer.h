@@ -32,7 +32,7 @@ typedef struct clientList
 typedef struct ClientServer
 {
     SOCKET socket;
-    char pseudo[TAILLE_PSEUDO];
+    char* pseudo;
     struct clientList *abonnements;
     struct MessageList *messages;
     bool isConnected;
@@ -49,11 +49,19 @@ MessageList *createMessageList(char *message, clientList *destinataires);
 void addMessage(MessageList *messageList, char *message, clientList *destinataires);
 void removeMessage(MessageList *messageList, char *message);
 void deleteMessageList(MessageList *message);
+int messageList_lenght(MessageList *messList);
 
 clientList *createClientList(ClientServer *client);
 void addClientList(clientList *list, ClientServer *client);
 void removeClientList(clientList *list, ClientServer *client);
 void deleteClientList(clientList *list);
+
+
+char* client_to_string(ClientServer *client);
+char* clients_to_string(clientList *cList);
+char* clientList_to_string(clientList *cList);
+char* messageList_to_string(MessageList *messList);
+char* convertIntToString(int i);
 
 
 #endif

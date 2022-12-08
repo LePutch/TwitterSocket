@@ -127,14 +127,45 @@ void end_server(int server_socket)
     close(server_socket);
 }
 
+void save_as_txt(char* file_path,char* data){
+    FILE* file = fopen(file_path,"w+");
+    if(file == NULL){
+        printf("Error while opening file %s in write mode \n",file_path);
+        return;
+    }
+
+    fprintf(file,"%s",data);
+
+    fclose(file);
+
+}
+
+
+void test_dataBase(){
+    //  clientList* receiv = createClientList(createClientServer(0,"Jerem",NULL,NULL));
+    // // addClientList(receiv,createClientServer(0,"Lucas",NULL,NULL));
+    //  MessageList *messListclient1 = createMessageList("message1",receiv);
+    // // MessageList *messListclient2 = createMessageList("message2",createClientList(createClientServer(0,"William",NULL,NULL)));
+    // // addMessage(messListclient1,"message2",createClientList(createClientServer(0,"Lucas",NULL,NULL)));
+    //  ClientServer *c1= createClientServer(0,"client1",messListclient1,createClientList(createClientServer(0,"abos1",NULL,NULL)));
+    // // ClientServer *c2= createClientServer(0,"client2",messListclient2,createClientList(createClientServer(0,"abos2",NULL,NULL)));
+    clientList *cList = createClientList(createClientServer(0,"Jerem",NULL,NULL));
+    addClientList(cList, createClientServer(0,"Will",NULL,NULL));
+    // // addClientList(cList, c2);
+
+    char* data = clientList_to_string(cList);
+    //save_as_txt("data.txt",data);
+}
+
+
 int  main (int argc, char *argv[])
 {
-    if(argc != 2){
-        printf("Usage : %s port\n", argv[0]);
-        return EXIT_FAILURE;
-    }
-    start_server(atoi(argv[1]));
-
+    // if(argc != 2){
+    //     printf("Usage : %s port\n", argv[0]);
+    //     return EXIT_FAILURE;
+    // }
+    //start_server(atoi(argv[1]));
+    test_dataBase();
     return EXIT_SUCCESS;
 
 }
